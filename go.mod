@@ -1,3 +1,3 @@
-module github.com/mutunx/m3u8
+module m3u8Downloader
 
 go 1.16
