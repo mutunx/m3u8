@@ -10,14 +10,14 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/oopsguy/m3u8/parse"
-	"github.com/oopsguy/m3u8/tool"
+	"m3u8/parse"
+	"m3u8/tool"
 )
 
 const (
 	tsExt            = ".ts"
 	tsFolderName     = "ts"
-	mergeTSFilename  = "main.ts"
+	mergeTSFilename  = "main"
 	tsTempFileSuffix = "_tmp"
 	progressWidth    = 40
 )
@@ -27,6 +27,7 @@ type Downloader struct {
 	queue    []int
 	folder   string
 	tsFolder string
+	fileName string
 	finish   int32
 	segLen   int
 
@@ -34,11 +35,12 @@ type Downloader struct {
 }
 
 // NewTask returns a Task instance
-func NewTask(output string, url string) (*Downloader, error) {
+func NewTask(output string, url string, fileName string) (*Downloader, error) {
 	result, err := parse.FromURL(url)
 	if err != nil {
 		return nil, err
 	}
+	// create downloader struct
 	var folder string
 	// If no output folder specified, use current directory
 	if output == "" {
@@ -57,10 +59,14 @@ func NewTask(output string, url string) (*Downloader, error) {
 	if err := os.MkdirAll(tsFolder, os.ModePerm); err != nil {
 		return nil, fmt.Errorf("create ts folder '[%s]' failed: %s", tsFolder, err.Error())
 	}
+	if fileName == "" {
+		fileName = mergeTSFilename
+	}
 	d := &Downloader{
 		folder:   folder,
 		tsFolder: tsFolder,
 		result:   result,
+		fileName: fileName,
 	}
 	d.segLen = len(result.M3u8.Segments)
 	d.queue = genSlice(d.segLen)
@@ -202,7 +208,7 @@ func (d *Downloader) merge() error {
 	}
 
 	// Create a TS file for merging, all segment files will be written to this file.
-	mFilePath := filepath.Join(d.folder, mergeTSFilename)
+	mFilePath := filepath.Join(d.folder, d.fileName+tsExt)
 	mFile, err := os.Create(mFilePath)
 	if err != nil {
 		return fmt.Errorf("create main TS file failed：%s", err.Error())
