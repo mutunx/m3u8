@@ -3,8 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
-
 	"github.com/mutunx/m3u8/dl"
 )
 
@@ -21,22 +19,23 @@ func init() {
 }
 
 func main() {
-	flag.Parse()
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("[error]", r)
-			os.Exit(-1)
-		}
-	}()
-	if url == "" {
-		panicParameter("u")
-	}
-	if output == "" {
-		panicParameter("o")
-	}
-	if chanSize <= 0 {
-		panic("parameter 'c' must be greater than 0")
-	}
+	//flag.Parse()
+	//defer func() {
+	//	if r := recover(); r != nil {
+	//		fmt.Println("[error]", r)
+	//		os.Exit(-1)
+	//	}
+	//}()
+	//if url == "" {
+	//	panicParameter("u")
+	//}
+	//if output == "" {
+	//	panicParameter("o")
+	//}
+	//if chanSize <= 0 {
+	//	panic("parameter 'c' must be greater than 0")
+	//}
+	url = "https://youku.com-ok-ifeng.com/20190921/2469_98ae65c2/index.m3u8"
 	downloader, err := dl.NewTask(output, url, "")
 	if err != nil {
 		panic(err)
@@ -45,6 +44,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Done!")
+
 }
 
 func panicParameter(name string) {

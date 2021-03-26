@@ -55,7 +55,7 @@ func NewTask(output string, url string, fileName string) (*Downloader, error) {
 	if err := os.MkdirAll(folder, os.ModePerm); err != nil {
 		return nil, fmt.Errorf("create storage folder failed: %s", err.Error())
 	}
-	tsFolder := filepath.Join(folder, tsFolderName)
+	tsFolder := filepath.Join(folder, fileName+tsFolderName)
 	if err := os.MkdirAll(tsFolder, os.ModePerm); err != nil {
 		return nil, fmt.Errorf("create ts folder '[%s]' failed: %s", tsFolder, err.Error())
 	}
