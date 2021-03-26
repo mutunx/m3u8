@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/url"
 
-	"m3u8/tool"
+	"github.com/mutunx/m3u8/tool"
 )
 
 type Result struct {

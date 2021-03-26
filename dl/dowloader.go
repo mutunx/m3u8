@@ -10,8 +10,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"m3u8/parse"
-	"m3u8/tool"
+	"github.com/mutunx/m3u8/parse"
+	"github.com/mutunx/m3u8/tool"
 )
 
 const (

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"m3u8/dl"
+	"github.com/mutunx/m3u8/dl"
 )
 
 var (
