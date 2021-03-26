@@ -1,3 +1,3 @@
-module m3u8Downloader
+module m3u8downloader
 
 go 1.16
