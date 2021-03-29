@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/url"
 
 	"github.com/mutunx/m3u8/tool"
@@ -26,7 +27,12 @@ func FromURL(link string) (*Result, error) {
 		return nil, fmt.Errorf("request m3u8 URL failed: %s", err.Error())
 	}
 	//noinspection GoUnhandledErrorResult
-	defer body.Close()
+	defer func() {
+		body.Close()
+		if err := recover(); err != nil {
+			log.Println("error recover", err)
+		}
+	}()
 	m3u8, err := parse(body)
 	if err != nil {
 		return nil, err
